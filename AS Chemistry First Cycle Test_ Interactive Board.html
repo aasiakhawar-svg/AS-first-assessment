@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AS Chemistry First Cycle Test: Interactive Board</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>⚛️</text></svg>">
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--text:#1d2433;--muted:#5b6478;--line:#dfe3ee;--hero:#1f3a93;--c:#2980B9;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10141f;--card:#1a2032;--text:#e8ecf7;--muted:#a3adc4;--line:#2c3550;--hero:#2a49b8;color-scheme:dark}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;font-size:16px}
+body.tm{font-size:21px}
+.wrap{max-width:900px;margin:auto;padding:14px 14px 90px}
+.hero{background:var(--hero);color:#fff;border-radius:18px;padding:18px 20px}
+.hero h1{margin:0;font-size:clamp(22px,5.5vw,32px)}
+.hero p{margin:4px 0 0;color:#ffd54f;font-size:14px}
+.hero .by{color:#fff;font-weight:bold;margin-top:8px;font-size:15px}
+.top{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0}
+.pill{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:5px 12px;font-weight:bold;font-size:14px}
+.tmb{margin-left:auto;background:#1f3a93;color:#fff;border:0;border-radius:20px;padding:8px 14px;font-weight:bold;cursor:pointer;font-size:14px}
+.tm .tmb{background:#c0392b}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{flex:1;min-width:130px;border:2px solid var(--c);background:var(--card);color:var(--text);border-radius:12px;padding:8px;font-weight:bold;cursor:pointer;font-size:13px}
+.tab.on{background:var(--c);color:#fff}
+.band{background:var(--c);color:#fff;border-radius:14px;padding:12px 16px;margin:14px 0 8px}
+.band h2{margin:0;font-size:1.3em}
+h3.s{margin:18px 0 6px;color:var(--c);font-size:1.05em}
+.lc,.q,.pk{background:var(--card);border:1px solid var(--line);border-left:8px solid var(--c);border-radius:12px;padding:10px 14px;margin-bottom:10px}
+.lc h3{margin:0 0 4px;font-size:1.02em;color:var(--c)}
+.lc ul{margin:0;padding-left:20px}
+.lc li{margin:3px 0}
+.tm .pt:not(.vis){visibility:hidden}
+.fls{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.fl{background:var(--c);color:#fff;border-radius:12px;padding:12px;cursor:pointer;min-height:92px}
+.fl span{display:none;margin-top:6px;background:rgba(255,255,255,.18);border-radius:8px;padding:6px 8px;font-size:.92em}
+.fl em{display:block;font-size:.8em;opacity:.85;margin-top:4px}
+.fl.open span{display:block}.fl.open em{display:none}
+.q p{margin:0 0 8px;font-weight:bold}
+.q p i{color:var(--c);font-style:normal}
+.opt{display:block;width:100%;text-align:left;margin:5px 0;padding:9px 12px;border:2px solid var(--line);background:var(--bg);color:var(--text);border-radius:10px;cursor:pointer;font-size:.95em}
+.opt.pick{border-color:var(--c)}
+.opt.ok{border-color:#27ae60;background:#e6f7ec;color:#14532d}
+.opt.no{border-color:#e74c3c;background:#fdeaea;color:#7f1d1d}
+.ex{display:none;margin-top:6px;padding:8px 12px;border-radius:8px;background:var(--bg);font-size:.92em}
+.ex.show{display:block}
+.rv{display:none;margin-top:4px;background:var(--c);color:#fff;border:0;border-radius:8px;padding:7px 12px;font-weight:bold;cursor:pointer}
+.tm .rv{display:inline-block}
+.bar{position:fixed;left:0;right:0;bottom:0;background:#1f3a93;color:#fff;display:none;gap:8px;justify-content:center;align-items:center;padding:10px 10px calc(10px + env(safe-area-inset-bottom,0px));z-index:5}
+.tm .bar{display:flex}
+.bar button{background:#fff;color:#1f3a93;border:0;border-radius:10px;padding:10px 16px;font-weight:bold;cursor:pointer;font-size:15px}
+footer{color:var(--muted);font-size:12px;text-align:center;margin:20px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="hero"><h1>⚛️ AS Chemistry: First Cycle Test Board</h1><p>Pearson Edexcel · Topics 1–3 · Learn, recall, self-check</p><div class="by">Designed by Teacher Aasia Khawar</div></div>
+<div class="top"><span class="pill" id="sc">Self-check: 0 / 16</span><button class="tmb" id="tmb">👩‍🏫 Teacher mode (online class)</button></div>
+<div class="tabs" id="tabs"></div>
+<div id="panel"></div>
+<footer>Designed by Teacher Aasia Khawar · Concepts follow the First Cycle Test Power Pack. Self-check questions are original practice questions.</footer>
+</div>
+<div class="bar"><button onclick="go(-1)">◀ Back</button><span id="cnt">0 / 0</span><button onclick="go(1)">Next point ▶</button><button onclick="go(99)">Reveal all</button><button onclick="go(-99)">Reset</button></div>
+<script>
+const F=s=>s.replace(/~([^~]+)~/g,"<sub>$1</sub>").replace(/\^([^^]+)\^/g,"<sup>$1</sup>");
+const CH=[
+{n:"1. Amount of Substance",c:"#2980B9",
+learn:[
+["The mole",["One mole = 6.02 × 10^23^ particles (Avogadro’s number).","One mole of a substance weighs its A~r~ or M~r~ in grams.","Every calculation passes through moles: convert in, use the equation ratio, convert out."]],
+["The 4-move calculation",["① Write the balanced equation.","② Turn the quantity you know into moles.","③ Multiply by the ratio (wanted ÷ known).","④ Turn moles into the unit asked for (g, dm^3^, concentration)."]],
+["Empirical formula and limiting reactant",["Divide each mass by A~r~, then divide by the smallest. If you get 1 : 1.5, multiply by 2.","Limiting reactant runs out first and decides how much product forms.","Always compare moles, never masses."]],
+["Atom economy, yield and ppm",["Atom economy = M~r~ of desired product ÷ total M~r~ of products × 100.","% yield = actual mass ÷ theoretical mass × 100.","ppm = mass of solute ÷ mass of solution × 10^6^."]]],
+flip:[["Moles from mass","n = m ÷ M~r~ (use A~r~ for an element)"],["Moles of gas at RTP","n = V ÷ 24 (V in dm^3^)"],["Moles in solution","n = c × V (V in dm^3^; cm^3^ ÷ 1000)"],["Making a soluble salt from an insoluble base","Add the base in excess, then filter off the leftover solid."]],
+mcq:[
+["How many moles are in 36 g of water (M~r~ = 18)?",["0.5 mol","2 mol","18 mol","648 mol"],1,"n = m ÷ M~r~ = 36 ÷ 18 = 2 mol."],
+["2Al + 6HCl → 2AlCl~3~ + 3H~2~. How many moles of H~2~ form from 0.10 mol Al?",["0.10 mol","0.15 mol","0.20 mol","0.30 mol"],1,"Ratio Al : H~2~ = 2 : 3, so 0.10 × 3/2 = 0.15 mol."],
+["Mg + 2HCl → MgCl~2~ + H~2~. You have 0.20 mol Mg and 0.50 mol HCl. Which is limiting?",["Mg","HCl","Both","Neither"],0,"0.20 mol Mg needs 0.40 mol HCl. There is 0.50 mol, so HCl is in excess and Mg is limiting."],
+["A compound has an Fe : O mole ratio of 1 : 1.5. Its empirical formula is:",["FeO","Fe~2~O~3~","Fe~3~O~2~","FeO~3~"],1,"Multiply 1 : 1.5 by 2 to get 2 : 3, so Fe~2~O~3~."]],
+pack:"Set 2: Q3, Q10, Q11, Q13 · Sheet A: Q4(d)(e) · Sheet B: Q4(b)(iv) · Sheet D: Q3(b)(iii), Q3(c)"},
+{n:"2. Atomic Structure",c:"#8E44AD",
+learn:[
+["Inside the atom",["Proton: relative mass 1, charge +1 (nucleus). Neutron: 1, 0 (nucleus). Electron: 1/1840, −1 (shells).","Atomic number Z = protons. Mass number A = protons + neutrons.","The Periodic Table follows atomic number, not mass (Ar comes before K)."]],
+["Isotopes and A~r~",["Isotopes: same protons, different neutrons. Same chemistry, slightly different physical properties.","A~r~ = Σ (mass number × % abundance) ÷ 100."]],
+["Mass spectrometer",["Four stages: ionisation → acceleration → deflection → detection.","Lighter ions are deflected more by the magnetic field.","It gives the masses and abundances of isotopes."]],
+["Shells, sub-shells and orbitals",["An orbital holds a maximum of 2 electrons with opposite spins.","s = 1 orbital (2 e⁻), p = 3 orbitals (6 e⁻), d = 5 orbitals (10 e⁻).","Order: 1s 2s 2p 3s 3p 4s 3d 4p. In p, singly occupy each orbital first.","Positive ions lose electrons from the highest shell first: Ca²⁺ = …3p⁶."]]],
+flip:[["Isotopes","Atoms of the same element (same protons) with different numbers of neutrons."],["Relative atomic mass A~r~","Weighted mean mass of an atom of the element ÷ (1/12 the mass of a ^12^C atom)."],["Isoelectronic","Species with the same number of electrons, e.g. O²⁻, F⁻, Ne, Na⁺, Mg²⁺."],["Cation versus anion size","Cation smaller than its atom; anion larger than its atom."]],
+mcq:[
+["How many neutrons are in an atom of ^79^Br (Z = 35)?",["35","44","79","114"],1,"Neutrons = 79 − 35 = 44."],
+["Which sub-shell can hold a maximum of 6 electrons?",["s","p","d","All of them"],1,"A p sub-shell has 3 orbitals × 2 electrons = 6."],
+["The electron configuration of Ca²⁺ is:",["1s² 2s² 2p⁶ 3s² 3p⁶ 4s²","1s² 2s² 2p⁶ 3s² 3p⁶","1s² 2s² 2p⁶ 3s²","1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹"],1,"Ca is …3p⁶ 4s². Remove the two highest-shell (4s) electrons to get …3p⁶."],
+["Chlorine is 75% ^35^Cl and 25% ^37^Cl. Its A~r~ is:",["35.0","35.5","36.0","36.5"],1,"(35 × 75 + 37 × 25) ÷ 100 = 35.5."]],
+pack:"Set 2: Q1, Q2, Q5, Q12 · Sheet A: Q1(a)–(d) · Sheet C: Q2, Q3(a), Q4 · Sheet D: Q3(a)(i)–(iii)"},
+{n:"3. Ionisation Energy",c:"#E67E22",
+learn:[
+["First ionisation energy",["Energy needed to remove one electron from each atom in one mole of gaseous atoms, forming one mole of gaseous 1+ ions.","Equation: X(g) → X⁺(g) + e⁻. Include state symbols.","Mark points: one electron · each atom in one mole · gaseous atoms to gaseous 1+ ions."]],
+["Four factors",["More protons (nuclear charge) → higher IE.","Greater distance / radius → lower IE.","More shielding by inner shells → lower IE.","Higher-energy sub-shell, or a paired electron → lower IE."]],
+["Trends",["Down a group IE decreases: more shells, more distance and shielding outweigh extra protons.","Across a period IE generally increases: more protons, same shell, similar shielding, smaller atoms."]],
+["The two dips and successive IE",["Mg → Al: Al’s outer electron is in 3p, higher energy and shielded by 3s², so easier to remove.","P → S: in S two electrons are paired in one 3p orbital; repulsion makes one easier to remove.","Successive IEs rise; a sudden big jump means the next electron is from an inner shell."]]],
+flip:[["Periodicity","Repeating pattern in properties across each period, because the outer electron structure repeats."],["Second ionisation energy","Energy to remove a second electron, from the 1+ ion."],["Why successive IEs increase","Same nuclear charge holds fewer electrons: less repulsion and a smaller ion."],["Evidence for shells","A sudden large jump in successive IE shows a new, inner shell."]],
+mcq:[
+["Which equation represents the first ionisation energy of magnesium?",["Mg(s) → Mg⁺(g) + e⁻","Mg(g) → Mg⁺(g) + e⁻","Mg(g) → Mg²⁺(g) + 2e⁻","Mg⁺(g) → Mg²⁺(g) + e⁻"],1,"Gaseous atom loses one electron to form a gaseous 1+ ion."],
+["Why does ionisation energy decrease down Group 1?",["Fewer protons","Outer electron is further away and more shielded, outweighing the extra nuclear charge","Atoms get smaller","Electrons are paired"],1,"More shells mean greater distance and shielding, which outweigh the increase in nuclear charge."],
+["Why is the first IE of Al lower than that of Mg?",["Al has fewer protons","Al’s outer electron is in a higher-energy 3p sub-shell, partly shielded by 3s²","Al’s electrons are paired","Al is larger than Na"],1,"The 3p electron is higher in energy and shielded, so it is easier to remove."],
+["A big jump occurs between the 2nd and 3rd ionisation energies. The element is in:",["Group 1","Group 2","Group 3","Group 4"],1,"Two outer electrons come off easily; the third is from an inner shell."]],
+pack:"Set 2: Q7, Q16 · Sheet A: Q1(e)(f), Q2, Q3 · Sheet C: Q1(a)–(c), Q5"},
+{n:"4. Bonding & Structure",c:"#27AE60",
+learn:[
+["Ionic bonding",["Ionic bond = electrostatic attraction between oppositely charged ions.","Giant lattice, non-directional attraction: high melting point, hard but brittle (like charges line up and repel).","No conduction as a solid (ions fixed); conducts molten or dissolved (ions free).","Bigger charges and smaller ions → more exothermic lattice enthalpy."]],
+["Covalent, dative and metallic",["Covalent bond = attraction between two nuclei and a shared pair of electrons.","Dative bond: both electrons come from one atom (NH~3~ + H⁺ → NH~4~⁺).","σ bond: head-on overlap. π bond: sideways overlap of p orbitals. Double bond = 1σ + 1π.","Metallic: positive ions in a sea of delocalised electrons."]],
+["Shapes (electron-pair repulsion)",["Lone pairs repel more than bonding pairs: lp–lp > lp–bp > bp–bp.","BeCl~2~ linear 180° · BF~3~ trigonal planar 120° · CH~4~ tetrahedral 109.5°.","NH~3~ trigonal pyramidal 107° · H~2~O V-shaped 104.5° · CO~2~ linear 180°.","A molecule is polar only if the dipoles do not cancel."]],
+["Intermolecular forces and structures",["London forces (all molecules; more electrons → stronger), permanent dipole–dipole, hydrogen bonds (H on N, O or F).","Melting or boiling a simple molecular substance breaks only intermolecular forces, not covalent bonds.","Giant covalent: very high m.p. Simple molecular: low m.p. Giant metallic: conducts solid and liquid."]]],
+flip:[["Ionic bond","Electrostatic attraction between oppositely charged ions."],["Covalent bond","Electrostatic attraction between two nuclei and a shared pair of electrons."],["Dative covalent bond","Shared pair where both electrons come from one atom (arrow from donor to acceptor)."],["Metallic bond","Electrostatic attraction between positive ions and delocalised electrons."]],
+mcq:[
+["What is the shape of an NH~3~ molecule?",["Linear","Trigonal planar","Trigonal pyramidal","Tetrahedral"],2,"3 bonding pairs and 1 lone pair give a trigonal pyramid (about 107°)."],
+["Why is CO~2~ a non-polar molecule even though C=O bonds are polar?",["The bonds are not polar","The molecule is linear so the dipoles cancel","It has lone pairs on carbon","It is ionic"],1,"Linear shape: the two dipoles are equal and opposite and cancel."],
+["Which substance has hydrogen bonding between its molecules?",["CH~4~","HCl","H~2~O","H~2~S"],2,"Hydrogen must be bonded to N, O or F. Only H~2~O qualifies."],
+["Why does solid NaCl not conduct electricity?",["It has no ions","Its ions are fixed in the lattice and cannot move","It has delocalised electrons","It is covalent"],1,"No mobile charge carriers in the solid; ions move only when molten or dissolved."]],
+pack:"Set 2: Q4, Q6, Q8, Q9, Q14, Q15 · Sheet A: Q4(a)–(c) · Sheet B: Q1, Q2, Q3, Q4(a)(b)(iii) · Sheet C: Q1(d)(e), Q2(c)(d) · Sheet D: Q1, Q2, Q3 · Sheet E: Q1(a)–(e)"}];
+let cur=0,tm=false,step=0,pts=[];const res={};
+function tally(){document.getElementById("sc").textContent="Self-check: "+Object.values(res).filter(v=>v).length+" / 16"}
+function render(){const ch=CH[cur];document.documentElement.style.setProperty("--c",ch.c);
+ document.getElementById("tabs").innerHTML=CH.map((x,i)=>`<button class="tab ${i===cur?"on":""}" style="--c:${x.c}" onclick="sel(${i})">${x.n}</button>`).join("");
+ let h=`<div class="band"><h2>${ch.n}</h2></div><h3 class="s">① Learn it (teacher explains, you follow)</h3>`;
+ h+=ch.learn.map(l=>`<div class="lc"><h3>${F(l[0])}</h3><ul>${l[1].map(p=>`<li class="pt">${F(p)}</li>`).join("")}</ul></div>`).join("");
+ h+=`<h3 class="s">② Must-learn: tap a card to check yourself</h3><div class="fls">${ch.flip.map(f=>`<div class="fl" onclick="this.classList.toggle('open')"><b>${F(f[0])}</b><span>${F(f[1])}</span><em>Say it first, then tap</em></div>`).join("")}</div>`;
+ h+=`<h3 class="s">③ Self-check (work on your own)</h3>`+ch.mcq.map((q,j)=>`<div class="q" id="q${cur}_${j}"><p><i>Q${j+1}</i> ${F(q[0])}</p>${q[1].map((o,k)=>`<button class="opt" onclick="pick(${j},${k})">${F(o)}</button>`).join("")}<button class="rv" onclick="rev(${j})">Reveal answer</button><div class="ex">${F(q[3])}</div></div>`).join("");
+ h+=`<h3 class="s">④ Practise in your Power Pack</h3><div class="pk">${ch.pack}<br><small>Try it first under exam timing (about 1 minute per mark), then mark it with the green boxes.</small></div>`;
+ document.getElementById("panel").innerHTML=h;
+ ch.mcq.forEach((q,j)=>{if(res[cur+"_"+j]!==undefined)shown(j,res[cur+"_"+j]===1?q[2]:-1,true)});
+ pts=[...document.querySelectorAll("#panel .pt")];show(tm?0:pts.length)}
+function shown(j,sel,keep){const q=CH[cur].mcq[j],el=document.getElementById("q"+cur+"_"+j);
+ el.querySelectorAll(".opt").forEach((b,k)=>{b.classList.remove("pick");if(k===q[2])b.classList.add("ok");else if(k===sel)b.classList.add("no")});el.querySelector(".ex").classList.add("show")}
+function pick(j,k){const q=CH[cur].mcq[j],key=cur+"_"+j;
+ if(tm){document.querySelectorAll("#q"+cur+"_"+j+" .opt").forEach((b,i)=>b.classList.toggle("pick",i===k));return}
+ if(res[key]!==undefined)return;res[key]=k===q[2]?1:0;shown(j,k);tally()}
+function rev(j){shown(j,-1)}
+function show(n){step=Math.max(0,Math.min(pts.length,n));pts.forEach((p,i)=>p.classList.toggle("vis",i<step));
+ document.getElementById("cnt").textContent=step+" / "+pts.length;if(tm&&step>0&&step<=pts.length)pts[step-1].scrollIntoView({block:"center",behavior:"smooth"})}
+function go(d){show(d===99?pts.length:d===-99?0:step+d)}
+function sel(i){cur=i;render();window.scrollTo(0,0)}
+document.getElementById("tmb").onclick=()=>{tm=!tm;document.body.classList.toggle("tm",tm);document.getElementById("tmb").textContent=tm?"✖ Exit teacher mode":"👩‍🏫 Teacher mode (online class)";render()};
+document.addEventListener("keydown",e=>{if(!tm)return;if(["ArrowRight","ArrowDown"," "].includes(e.key)){e.preventDefault();go(1)}if(["ArrowLeft","ArrowUp"].includes(e.key)){e.preventDefault();go(-1)}});
+render();tally();
+</script>
+</body>
+</html>
